@@ -1,0 +1,16 @@
+@font-face { font-family: Rockwell; src: url('../fonts/Rockwell.ttf'); }
+@font-face { font-family: Rockwell; font-weight: bold; src: url('../fonts/RockwellBold.ttf'); }
+
+body {
+	font-family:"Helvetica Neue";
+	font-weight: 300;
+	font-size:14px;;
+}
+
+#mainHeader {
+	h1 {
+		font-family:"Rockwell";
+		font-weight: normal;
+		font-size:50px;
+	}
+}
