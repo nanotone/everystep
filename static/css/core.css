@@ -9,40 +9,129 @@
   src: url("../fonts/RockwellBold.ttf");
 }
 
-/* line 4, ../sass/core.scss */
+@font-face {
+  font-family: Avenir;
+  src: url("../fonts/AvenirNext.otf");
+}
+
+@font-face {
+  font-family: Avenir;
+  font-weight: bold;
+  src: url("../fonts/AvenirNextBold.otf");
+}
+
+@font-face {
+  font-family: Avenir;
+  font-style: italic;
+  src: url("../fonts/AvenirNextItalic.otf");
+}
+
+@font-face {
+  font-family: Avenir;
+  font-weight: bold;
+  font-style: italic;
+  src: url("../fonts/AvenirNextBoldItalic.otf");
+}
+
+/* line 20, ../sass/core.scss */
 body {
-  font-family: "Helvetica Neue";
-  font-weight: 300;
+  font-family: "Avenir", sans-serif;
   font-size: 14px;
 }
 
-/* line 11, ../sass/core.scss */
+/* line 25, ../sass/core.scss */
+p {
+  line-height: 1.5em;
+}
+
+/* line 29, ../sass/core.scss */
+p.intro {
+  font-size: 1.5em;
+}
+
+/* line 34, ../sass/core.scss */
 #mainHeader h1 {
   font-family: "Rockwell";
   font-weight: normal;
   font-size: 50px;
 }
 
-/* line 19, ../sass/core.scss */
+/* line 42, ../sass/core.scss */
 #invitePledgeForm .formItem {
   margin: 20px 0px;
 }
-/* line 23, ../sass/core.scss */
+/* line 46, ../sass/core.scss */
 #invitePledgeForm label {
   display: block;
 }
 
-/* line 29, ../sass/core.scss */
+/* line 52, ../sass/core.scss */
 #causeInfo {
   border: 1px solid black;
 }
 
-/* line 33, ../sass/core.scss */
+/* line 56, ../sass/core.scss */
 #mainFooter {
   margin-top: 100px;
 }
 
-/* line 37, ../sass/core.scss */
+/* line 60, ../sass/core.scss */
 #mainHeader {
   margin-bottom: 100px;
+}
+
+/* line 64, ../sass/core.scss */
+#emailContainer {
+  width: 600px;
+  border: 1px solid black;
+  margin: 100px auto;
+  padding: 30px;
+}
+/* line 70, ../sass/core.scss */
+#emailContainer .big {
+  text-align: center;
+}
+/* line 74, ../sass/core.scss */
+#emailContainer .signature {
+  text-align: right;
+}
+/* line 78, ../sass/core.scss */
+#emailContainer #reason {
+  border: 1px solid black;
+  padding: 15px;
+  font-size: 1.3em;
+}
+
+/* line 84, ../sass/core.scss */
+.bigButton {
+  display: inline-block;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  border-radius: 10px;
+  border: 2px solid #8e5000;
+  padding: 10px 15px;
+  font-size: 30px;
+  font-family: "Rockwell";
+  text-decoration: none;
+  margin: 0px 5px;
+  background: orange;
+  color: #fff;
+  -moz-box-shadow: 0px 2px 5px #aaaaaa;
+  -webkit-box-shadow: 0px 2px 5px #aaaaaa;
+  -o-box-shadow: 0px 2px 5px #aaaaaa;
+  box-shadow: 0px 2px 5px #aaaaaa;
+}
+
+/* line 98, ../sass/core.scss */
+.bigButtonContainer {
+  text-align: center;
+}
+
+/* line 102, ../sass/core.scss */
+#causeBlurb {
+  border: 1px solid black;
+  padding: 15px;
 }
