@@ -1,0 +1,16 @@
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+var ws = new WebSocket('ws://everystep.tinabeans.com:5679/websocket');
+ws.onopen = function() {
+	console.log("OPEN");
+	ws.send("HELLO");
+}
+ws.onmessage = function(e) {
+	$('#status').text(e.data);
+}
+</script>
+</head>
+<body>
+<div id="status"></div>
+</body>

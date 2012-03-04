@@ -1,17 +1,101 @@
 <head>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript">
+String.prototype.repeat = function(n) { return new Array(n + 1).join(this); };
+
+function LOG(s) {
+	$('#log').prepend($('<div>' + s + '</div>'));
+}
+function fmt(v) {
+	return Math.round(v[0]) + ' ' + Math.round(v[1]) + ' ' + Math.round(v[2]);
+}
+function mag(v) {
+	return Math.sqrt(magsq(v));
+}
+function magsq(v) {
+	return v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
+}
+function vectorize(obj) {
+	return [obj.x, obj.y, obj.z];
+}
+function getTime() {
+	return (new Date()).getTime();
+}
+
+var startTime;
+var weightedSum;
+var weight;
+var currentValue;
+var currentStartTime;
+var timeout;
+var interval = 250;
+var decayPerSec = 0.3;
+var isRunning;
+
 $(function() {
-	$('body').append($('<div>hello2</div>'));
-	window.ondevicemotion = function(e) {
-		var accel = e.accelerationIncludingGravity;
-		function fmt(key) {
-			return Math.round(accel[key]);
-		}
-		$('body').prepend($('<div>' + fmt('x')+ ' ' + fmt('y')+ ' ' + fmt('z')+ '</div>'));
-	};
+	LOG("HELLO");
+	$('#toggle').click(toggleTracking);
 });
+function toggleTracking() {
+	if (!window.ondevicemotion) {
+		window.ondevicemotion = deviceMotion;
+		$('#toggle').text('STOP');
+		weightedSum = 0;
+		weight = 0;
+		currentValue = 0;
+		currentStartTime = getTime();
+		timeout = setTimeout(tick, interval);
+		setRunningStatus(false);
+	}
+	else {
+		window.ondevicemotion = null;
+		$('#toggle').text('START');
+		clearTimeout(timeout);
+	}
+}
+function deviceMotion(e) {
+	var a = vectorize(e.acceleration); // accelerationIncludingGravity
+	addSample(mag(a));
+}
+function addSample(value) {
+	var now = getTime();
+	var elapsed = now - currentStartTime;
+	var decay = Math.pow(decayPerSec, elapsed/1000);
+
+	weightedSum = weightedSum * decay + (1 - decay) * currentValue;
+	weight = weight * decay + (1 - decay);
+	
+	currentValue = value;
+	currentStartTime = now;
+}
+function getValue() {
+	var now = getTime();
+	var elapsed = now - currentStartTime;
+	var decay = Math.pow(decayPerSec, elapsed/1000);
+
+	var numer = weightedSum * decay + (1 - decay) * currentValue;
+	var denom = weight * decay + (1 - decay);
+	return numer / denom;
+}
+function tick() {
+	value = getValue();
+	if (!isRunning && value > 5) {
+		setRunningStatus(true);
+		LOG("STARTED RUNNING");
+	}
+	else if (isRunning && value < 3) {
+		setRunningStatus(false);
+		LOG("STOPPED RUNNING");
+	}
+	timeout = setTimeout(tick, interval);
+}
+function setRunningStatus(value) {
+	isRunning = value;
+	$.get('/status/' + (value ? 'started':'stopped'));
+}
 </script>
 </head>
 <body>
+<button id="toggle">START</button>
+<div id="log"></div>
 </body>
