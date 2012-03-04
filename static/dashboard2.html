@@ -8,36 +8,47 @@
 	<script type="text/javascript" src="socket.io.min.js"></script>
 	<script type="text/javascript" src="util.js"></script>
 	<script type="text/javascript">
-	var socket = new io.Socket('everystep.tinabeans.com', {port: 5679});
-	var global_msg;
-	socket.connect();
-	socket.on('message', function(msg) {
-		global_msg = msg;
-		if (msg.type == 'addMiles') {
-			addMiles(msg.miles, msg.monies, msg.anim);
-		}
+	var socket;
+	var _weekSteps = 14091;
+	var _totalSteps = 87324;
+	var stepsPerDollar = 40*100;
+	$(function() {
+		socket = new io.Socket('everystep.tinabeans.com', {port: 5679});
+		socket.connect();
+		socket.on('message', function(msg) {
+			if (msg.type == 'addMiles') {
+				console.log(JSON.stringify(msg));
+				addSteps(msg.miles, msg.anim);
+			}
+		});
+		setStats(_weekSteps, _totalSteps);
 	});
-
+	
 	var defaultSteps = 20;
 	var chachingtime = 1;
-	function addMiles(miles, monies, anim) {
+	function addSteps(steps, anim) {
 		var steps = (anim ? defaultSteps : 1);
-		var weekMiles = Number($('.week-miles').text());
-		var weekMonies = Number($('.week-monies').text());
-		var totalMiles = Number($('.total-miles').text());
-		var totalMonies = Number($('.total-monies').text());
 		var i = 0;
 		var tick = function() {
 			i += 1;
-			$('.week-miles').text(Math.round(weekMiles + i/steps*miles));
-			$('.week-monies').text(fmtDec(weekMonies + i/steps*monies, 2));
-			$('.total-miles').text(Math.round(totalMiles + i/steps*miles));
-			$('.total-monies').text(fmtDec(totalMonies + i/steps*monies, 2));
+			setStats(_weekSteps + i/steps*steps, _totalSteps + i/steps*steps);
 			if (i < steps) {
 				setTimeout(tick, chachingtime*1000/steps);
 			}
+			else {
+				_weekSteps += steps;
+				_totalSteps += steps;
+			}
 		};
 		tick();
+	}
+	function setStats(weekSteps, totalSteps) {
+		$('.week-steps').text(Math.round(weekSteps));
+		$('.week-miles').text(fmtDec(weekSteps / 2000, 1));
+		$('.week-monies').text(fmtDec(weekSteps / stepsPerDollar, 2));
+		$('.total-steps').text(Math.round(totalSteps));
+		$('.total-miles').text(fmtDec(totalSteps / 2000, 1));
+		$('.total-monies').text(fmtDec(totalSteps / stepsPerDollar, 2));
 	}
 	</script>
 <style>
@@ -57,13 +68,13 @@
 <div style="background-image: url('images/dashboard.png'); height: 1050px; background-repeat: no-repeat;">
 </div>
 
-<div class="week-miles week stats" style="top: 380px;">12091</div>
-<div class="week stats" style="top: 471px;">6</div>
-<div class="week stats" style="top: 562px;">$<span class="week-monies">17.32</span></div>
+<div class="week-steps week stats" style="top: 380px;"></div>
+<div class="week-miles week stats" style="top: 471px;"></div>
+<div class="week stats" style="top: 562px;">$<span class="week-monies"></span></div>
 
-<div class="total-miles total stats" style="top: 380px;">87293</div>
-<div class="total stats" style="top: 471px;">43</div>
-<div class="total stats" style="top: 562px;">$<span class="total-monies">41.68</span></div>
+<div class="total-steps total stats" style="top: 380px;"></div>
+<div class="total-miles total stats" style="top: 471px;"></div>
+<div class="total stats" style="top: 562px;">$<span class="total-monies"></span></div>
 
 </body>
 </html>
