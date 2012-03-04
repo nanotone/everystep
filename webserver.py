@@ -1,3 +1,4 @@
+import threading
 import urllib2
 
 import pymongo
@@ -7,6 +8,13 @@ import flask
 app = flask.Flask(__name__)
 
 db = pymongo.Connection().everystep
+
+runtimer = None
+def doStep():
+	global runtimer
+	urllib2.urlopen('http://localhost:5679/update?action=add&monies=0.001&miles=1&anim=0').read()
+	runtimer = threading.Timer(0.5, doStep)
+	runtimer.start()
 
 @app.route('/')
 def index():
@@ -21,6 +29,11 @@ def user(uid):
 def status(running):
 	print "RUNNING", running
 	urllib2.urlopen('http://localhost:5679/update?status=%s' % running).read()
+	if running == 'started':
+		doStep()
+	else:
+		if runtimer:
+			runtimer.cancel()
 	return running
 
 if __name__ == "__main__":

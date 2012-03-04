@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="css/core.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="socket.io.min.js"></script>
+	<script type="text/javascript" src="util.js"></script>
 	<script type="text/javascript">
 	var socket = new io.Socket('everystep.tinabeans.com', {port: 5679});
 	var global_msg;
@@ -13,18 +14,14 @@
 	socket.on('message', function(msg) {
 		global_msg = msg;
 		if (msg.type == 'addMiles') {
-			addMiles(msg.miles, msg.monies);
+			addMiles(msg.miles, msg.monies, msg.anim);
 		}
 	});
 
-	var steps = 20;
+	var defaultSteps = 20;
 	var chachingtime = 1;
-	function fmtDec(amt, places) {
-		amt = String(Math.round(amt * Math.pow(10, places)));
-		frontlen = amt.length - places;
-		return amt.substr(0, frontlen) + '.' + amt.substr(frontlen);
-	}
-	function addMiles(miles, monies) {
+	function addMiles(miles, monies, anim) {
+		var steps = (anim ? defaultSteps : 1);
 		var weekMiles = Number($('.week-miles').text());
 		var weekMonies = Number($('.week-monies').text());
 		var totalMiles = Number($('.total-miles').text());
@@ -32,10 +29,10 @@
 		var i = 0;
 		var tick = function() {
 			i += 1;
-			$('.week-miles').text(fmtDec(weekMiles + i/steps*miles, 1));
-			$('.week-monies').text(fmtDec(weekMonies + i/steps*monies, 2));
-			$('.total-miles').text(fmtDec(totalMiles + i/steps*miles, 1));
-			$('.total-monies').text(fmtDec(totalMonies + i/steps*monies, 2));
+			$('.week-miles').text(Math.round(weekMiles + i/steps*miles));
+			$('.week-monies').text(fmtDec(weekMonies + i/steps*monies, 4));
+			$('.total-miles').text(Math.round(totalMiles + i/steps*miles));
+			$('.total-monies').text(fmtDec(totalMonies + i/steps*monies, 4));
 			if (i < steps) {
 				setTimeout(tick, chachingtime*1000/steps);
 			}
@@ -64,13 +61,13 @@
 	
 	<h2>This Week</h2>
 	<ul>
-		<li><span class="week-miles">20</span> miles</li>
+		<li><span class="week-miles">6503</span> steps</li>
 		<li>$<span class="week-monies">15</span> raised from 3 friends</li>
 	</ul>
 	
 	<h2>All Time</h2>
 	<ul>
-		<li><span class="total-miles">210</span> miles</li>
+		<li><span class="total-miles">8174</span> steps</li>
 		<li>$<span class="total-monies">157.50</span></li>
 	</ul>
 	

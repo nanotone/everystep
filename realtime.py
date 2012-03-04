@@ -19,14 +19,14 @@ class MainHandler(tornado.web.RequestHandler):
 		global current_status
 		action = self.get_argument('action', None)
 		if action == 'add':
-			print "adding miles and monies"
 			broadcast({'type': 'addMiles',
 			           'miles': float(self.get_argument('miles')),
 			           'monies': float(self.get_argument('monies')),
+			           'anim': int(self.get_argument('anim')),
 			         })
 		else:
 			current_status = self.get_argument('status')
-			print "status arg:", current_status
+			print "status:", current_status
 			broadcast(current_status)
 		self.write("Hello, world")
 
