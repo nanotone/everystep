@@ -46,46 +46,53 @@ p {
 }
 
 /* line 31, ../sass/core.scss */
+a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #ee703c;
+}
+
+/* line 37, ../sass/core.scss */
 p.intro {
   font-size: 1.5em;
 }
 
-/* line 35, ../sass/core.scss */
+/* line 41, ../sass/core.scss */
 #mainHeader {
   background: #e8f6f2;
 }
-/* line 38, ../sass/core.scss */
+/* line 44, ../sass/core.scss */
 #mainHeader h1 {
   font-family: "Rockwell";
   font-weight: normal;
   font-size: 50px;
 }
 
-/* line 46, ../sass/core.scss */
+/* line 53, ../sass/core.scss */
 #invitePledgeForm .formItem {
   margin: 20px 0px;
 }
-/* line 50, ../sass/core.scss */
+/* line 57, ../sass/core.scss */
 #invitePledgeForm label {
   display: block;
 }
 
-/* line 56, ../sass/core.scss */
+/* line 63, ../sass/core.scss */
 #causeInfo {
   border: 1px solid black;
 }
 
-/* line 60, ../sass/core.scss */
+/* line 67, ../sass/core.scss */
 #mainFooter {
   margin-top: 100px;
 }
 
-/* line 64, ../sass/core.scss */
+/* line 71, ../sass/core.scss */
 #mainHeader {
   margin-bottom: 100px;
 }
 
-/* line 68, ../sass/core.scss */
+/* line 75, ../sass/core.scss */
 #emailContainer {
   width: 600px;
   border: 1px solid black;
@@ -93,15 +100,15 @@ p.intro {
   padding: 30px;
   text-align: center;
 }
-/* line 76, ../sass/core.scss */
+/* line 83, ../sass/core.scss */
 #emailContainer .big {
   text-align: center;
 }
-/* line 80, ../sass/core.scss */
+/* line 87, ../sass/core.scss */
 #emailContainer .signature {
   text-align: right;
 }
-/* line 84, ../sass/core.scss */
+/* line 91, ../sass/core.scss */
 #emailContainer #reason {
   text-align: left;
   border: 1px solid black;
@@ -109,7 +116,7 @@ p.intro {
   font-size: 1.3em;
 }
 
-/* line 91, ../sass/core.scss */
+/* line 98, ../sass/core.scss */
 .bigButton {
   display: inline-block;
   -moz-border-radius: 10px;
@@ -132,31 +139,31 @@ p.intro {
   box-shadow: 0px 2px 5px #aaaaaa;
 }
 
-/* line 105, ../sass/core.scss */
+/* line 112, ../sass/core.scss */
 .bigButtonContainer {
   text-align: center;
   margin: 30px;
 }
 
-/* line 110, ../sass/core.scss */
+/* line 117, ../sass/core.scss */
 #causeBlurb {
   border: 1px solid black;
   padding: 15px;
 }
 
-/* line 114, ../sass/core.scss */
+/* line 121, ../sass/core.scss */
 #pitchContainer {
   border: 1px solid black;
   padding: 15px;
   overflow: hidden;
   *zoom: 1;
 }
-/* line 118, ../sass/core.scss */
+/* line 125, ../sass/core.scss */
 #pitchContainer p {
   margin: 0;
   font-size: 24px;
 }
-/* line 123, ../sass/core.scss */
+/* line 130, ../sass/core.scss */
 #pitchContainer .big {
   display: block;
   font-size: 50px;
@@ -164,15 +171,26 @@ p.intro {
   position: relative;
   top: 4px;
 }
-/* line 131, ../sass/core.scss */
+/* line 138, ../sass/core.scss */
 #pitchContainer #pitch1 {
   float: left;
   width: 50%;
   text-align: center;
 }
-/* line 137, ../sass/core.scss */
+/* line 144, ../sass/core.scss */
 #pitchContainer #pitch2 {
   float: right;
   width: 50%;
   text-align: center;
+}
+
+/* line 151, ../sass/core.scss */
+#linksContainer {
+  text-align: center;
+}
+/* line 154, ../sass/core.scss */
+#linksContainer a {
+  font-size: 20px;
+  display: block;
+  margin: 20px 0px;
 }

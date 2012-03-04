@@ -28,6 +28,12 @@ p {
 	line-height:1.5em;
 }
 
+a {
+	text-decoration: none;
+	font-weight:bold;
+	color:#ee703c;
+}
+
 p.intro {
 	font-size:1.5em;
 }
@@ -39,6 +45,7 @@ p.intro {
 		font-family:"Rockwell";
 		font-weight: normal;
 		font-size:50px;
+		
 	}
 }
 
@@ -138,5 +145,15 @@ p.intro {
 		float:right;
 		width:50%;
 		text-align: center;
+	}
+}
+
+#linksContainer {
+	text-align: center;
+
+	a {
+		font-size:20px;
+		display: block;
+		margin:20px 0px;
 	}
 }
