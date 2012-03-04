@@ -5,29 +5,37 @@
 	<title>EveryStep Counts!</title>
 	<link rel="stylesheet" type="text/css" media="screen" href="css/core.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="socket.io.min.js"></script>
 	<script type="text/javascript">
+	var socket = new io.Socket('everystep.tinabeans.com', {port: 5679});
+	var global_msg;
+	socket.connect();
+	socket.on('message', function(msg) {
+		global_msg = msg;
+		if (msg.type == 'addMiles') {
+			addMiles(msg.miles, msg.monies);
+		}
+	});
+
+	var steps = 20;
+	var chachingtime = 1;
 	function fmtDec(amt, places) {
 		amt = String(Math.round(amt * Math.pow(10, places)));
 		frontlen = amt.length - places;
 		return amt.substr(0, frontlen) + '.' + amt.substr(frontlen);
 	}
-	var ws = new WebSocket('ws://everystep.tinabeans.com:5679/websocket');
-	ws.onmessage = function(e) {
-		var msg = JSON.parse(e.data);
-		if (msg.type == 'addMiles') {
-			addMiles(msg.miles, msg.monies);
-		}
-	}
-	var steps = 20;
-	var chachingtime = 1;
 	function addMiles(miles, monies) {
 		var weekMiles = Number($('.week-miles').text());
 		var weekMonies = Number($('.week-monies').text());
+		var totalMiles = Number($('.total-miles').text());
+		var totalMonies = Number($('.total-monies').text());
 		var i = 0;
 		var tick = function() {
 			i += 1;
 			$('.week-miles').text(fmtDec(weekMiles + i/steps*miles, 1));
 			$('.week-monies').text(fmtDec(weekMonies + i/steps*monies, 2));
+			$('.total-miles').text(fmtDec(totalMiles + i/steps*miles, 1));
+			$('.total-monies').text(fmtDec(totalMonies + i/steps*monies, 2));
 			if (i < steps) {
 				setTimeout(tick, chachingtime*1000/steps);
 			}

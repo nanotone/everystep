@@ -3,21 +3,23 @@ import json
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
+import tornadio
 
 tornado.websocket.WebSocketHandler.allow_draft76 = (lambda self: True)
 
-clients = []
+clients = set()
 current_status = 'stopped'
 
 def broadcast(msg):
-	msg = json.dumps(msg)
 	for c in clients:
-		c.write_message(msg)
+		c.send(msg)
 
 class MainHandler(tornado.web.RequestHandler):
 	def get(self):
 		global current_status
-		if self.get_argument('action') == 'add':
+		action = self.get_argument('action', None)
+		if action == 'add':
+			print "adding miles and monies"
 			broadcast({'type': 'addMiles',
 			           'miles': float(self.get_argument('miles')),
 			           'monies': float(self.get_argument('monies')),
@@ -29,22 +31,23 @@ class MainHandler(tornado.web.RequestHandler):
 		self.write("Hello, world")
 
 
-class WebSocketHandler(tornado.websocket.WebSocketHandler):
-	def open(self):
+class SocketHandler(tornadio.SocketConnection):
+	def on_open(self, *args, **kwargs):
 		print "OPEN"
-		#self.write_message(current_status)
-		clients.append(self)
+		clients.add(self)
 
 	def on_message(self, message):
 		print "MSG", message
 
 	def on_close(self):
 		print "CLOSE"
-		clients.remove(self)
+		try:
+			clients.remove(self)
+		except: pass
 
 application = tornado.web.Application([
-	(r'/', MainHandler),
-	(r'/websocket', WebSocketHandler),
+	(r'/update', MainHandler),
+	tornadio.get_router(SocketHandler).route(),
 ])
 
 if __name__ == '__main__':

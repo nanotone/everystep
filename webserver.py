@@ -20,7 +20,7 @@ def user(uid):
 @app.route('/status/<running>')
 def status(running):
 	print "RUNNING", running
-	urllib2.urlopen('http://localhost:5679/?status=%s' % running).read()
+	urllib2.urlopen('http://localhost:5679/update?status=%s' % running).read()
 	return running
 
 if __name__ == "__main__":
