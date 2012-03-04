@@ -22,3 +22,27 @@ body {
   font-weight: normal;
   font-size: 50px;
 }
+
+/* line 19, ../sass/core.scss */
+#invitePledgeForm .formItem {
+  margin: 20px 0px;
+}
+/* line 23, ../sass/core.scss */
+#invitePledgeForm label {
+  display: block;
+}
+
+/* line 29, ../sass/core.scss */
+#causeInfo {
+  border: 1px solid black;
+}
+
+/* line 33, ../sass/core.scss */
+#mainFooter {
+  margin-top: 100px;
+}
+
+/* line 37, ../sass/core.scss */
+#mainHeader {
+  margin-bottom: 100px;
+}
