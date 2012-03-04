@@ -4,7 +4,37 @@
 	<meta charset=utf-8 />
 	<title>EveryStep Counts!</title>
 	<link rel="stylesheet" type="text/css" media="screen" href="css/core.css" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	function fmtDec(amt, places) {
+		amt = String(Math.round(amt * Math.pow(10, places)));
+		frontlen = amt.length - places;
+		return amt.substr(0, frontlen) + '.' + amt.substr(frontlen);
+	}
+	var ws = new WebSocket('ws://everystep.tinabeans.com:5679/websocket');
+	ws.onmessage = function(e) {
+		var msg = JSON.parse(e.data);
+		if (msg.type == 'addMiles') {
+			addMiles(msg.miles, msg.monies);
+		}
+	}
+	var steps = 20;
+	var chachingtime = 1;
+	function addMiles(miles, monies) {
+		var weekMiles = Number($('.week-miles').text());
+		var weekMonies = Number($('.week-monies').text());
+		var i = 0;
+		var tick = function() {
+			i += 1;
+			$('.week-miles').text(fmtDec(weekMiles + i/steps*miles, 1));
+			$('.week-monies').text(fmtDec(weekMonies + i/steps*monies, 2));
+			if (i < steps) {
+				setTimeout(tick, chachingtime*1000/steps);
+			}
+		};
+		tick();
+	}
+	</script>
 </head>
 <body>
 
@@ -26,14 +56,14 @@
 	
 	<h2>This Week</h2>
 	<ul>
-		<li>20 miles</li>
-		<li>$15 raised from 3 friends</li>
+		<li><span class="week-miles">20</span> miles</li>
+		<li>$<span class="week-monies">15</span> raised from 3 friends</li>
 	</ul>
 	
 	<h2>All Time</h2>
 	<ul>
-		<li>210 miles</li>
-		<li>$157.5</li>
+		<li><span class="total-miles">210</span> miles</li>
+		<li>$<span class="total-monies">157.50</span></li>
 	</ul>
 	
 	<h2>Your Cheering Squad:</h2>
