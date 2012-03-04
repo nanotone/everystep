@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title>EveryStep Counts!</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="css/core.css" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+	function tick() {
+		var elapsed = (new Date()).getTime() - 1330793400000;
+		nSteps = Math.round(elapsed / 7);
+		$('.total-steps').text(nSteps);
+		$('.total-miles').text(fmtDec(nSteps/1888, 1));
+		$('.total-monies').text(fmtDec(nSteps / 4000, 2));
+		setTimeout(tick, 1000);
+	}
+	$(function() {
+		tick();
+	});
+	</script>
+<style>
+.total {
+	position: absolute;
+	top: 550px;
+	color: #f56d40; font-family: Helvetica Neue; font-size: 40px;
+}
+</style>
+</head>
+<body>
+<div style="background-image: url('images/homepage.png'); height: 1990px; background-repeat: no-repeat;"></div>
+
+<div class="total total-steps" style="left: 81px"></div>
+<div class="total total-miles" style="left: 450px">10</div>
+<div class="total" style="left: 748px">$<span class="total-monies">10</span></div>
+
+<div style="position: absolute; left: 342px; top: 1367px; width: 309px; height: 105px; background-color: transparent; cursor: pointer" onclick="window.location.href='inviteEmail.html'"></div>
+
+</body>
+</html>

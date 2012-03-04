@@ -51,6 +51,7 @@ function toggleTracking() {
 		window.ondevicemotion = null;
 		$('#toggle').text('START');
 		clearTimeout(timeout);
+		setRunningStatus(false);
 	}
 }
 function deviceMotion(e) {

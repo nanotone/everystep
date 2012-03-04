@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title>EveryStep Counts!</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="css/core.css" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="socket.io.min.js"></script>
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+	var socket;
+	var _weekSteps = 14091;
+	var _totalSteps = 87324;
+	var stepsPerDollar = 40*100;
+	$(function() {
+		socket = new io.Socket('everystep.tinabeans.com', {port: 5679});
+		socket.connect();
+		socket.on('message', function(msg) {
+			if (msg.type == 'addMiles') {
+				console.log(JSON.stringify(msg));
+				addSteps(msg.miles, msg.anim);
+			}
+		});
+		setStats(_weekSteps, _totalSteps);
+	});
+	
+	var defaultSteps = 20;
+	var chachingtime = 1;
+	function addSteps(steps, anim) {
+		var steps = (anim ? defaultSteps : 1);
+		var i = 0;
+		var tick = function() {
+			i += 1;
+			setStats(_weekSteps + i/steps*steps, _totalSteps + i/steps*steps);
+			if (i < steps) {
+				setTimeout(tick, chachingtime*1000/steps);
+			}
+			else {
+				_weekSteps += steps;
+				_totalSteps += steps;
+			}
+		};
+		tick();
+	}
+	function setStats(weekSteps, totalSteps) {
+		$('.week-steps').text(Math.round(weekSteps));
+		$('.week-miles').text(fmtDec(weekSteps / 2000, 1));
+		$('.week-monies').text(fmtDec(weekSteps / stepsPerDollar, 2));
+		$('.total-steps').text(Math.round(totalSteps));
+		$('.total-miles').text(fmtDec(totalSteps / 2000, 1));
+		$('.total-monies').text(fmtDec(totalSteps / stepsPerDollar, 2));
+	}
+	</script>
+<style>
+.stats {
+	position: absolute;
+	color: #f56d40; font-family: Helvetica Neue; font-size: 40px;
+}
+.week {
+	left: 310px;
+}
+.total {
+	left: 480px;
+}
+</style>
+</head>
+<body style="background-image: url('images/bg.png'); background-repeat: repeat-x">
+<div style="background-image: url('images/dashboard.png'); height: 1050px; background-repeat: no-repeat;">
+</div>
+
+<div class="week-steps week stats" style="top: 380px;"></div>
+<div class="week-miles week stats" style="top: 471px;"></div>
+<div class="week stats" style="top: 562px;">$<span class="week-monies"></span></div>
+
+<div class="total-steps total stats" style="top: 380px;"></div>
+<div class="total-miles total stats" style="top: 471px;"></div>
+<div class="total stats" style="top: 562px;">$<span class="total-monies"></span></div>
+
+</body>
+</html>

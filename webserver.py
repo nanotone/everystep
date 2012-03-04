@@ -13,7 +13,7 @@ runtimer = None
 def doStep():
 	global runtimer
 	urllib2.urlopen('http://localhost:5679/update?action=add&monies=0.001&miles=1&anim=0').read()
-	runtimer = threading.Timer(0.5, doStep)
+	runtimer = threading.Timer(0.4, doStep)
 	runtimer.start()
 
 @app.route('/')
@@ -27,13 +27,14 @@ def user(uid):
 
 @app.route('/status/<running>')
 def status(running):
+	global runtimer
 	print "RUNNING", running
 	urllib2.urlopen('http://localhost:5679/update?status=%s' % running).read()
-	if running == 'started':
+	if running == 'started' and not runtimer:
 		doStep()
-	else:
-		if runtimer:
-			runtimer.cancel()
+	elif running == 'stopped' and runtimer:
+		runtimer.cancel()
+		runtimer = None
 	return running
 
 if __name__ == "__main__":
