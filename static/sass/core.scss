@@ -21,6 +21,7 @@
 body {
 	font-family:"Avenir", sans-serif;
 	font-size:14px;
+	margin:0px;
 }
 
 p {
@@ -32,6 +33,8 @@ p.intro {
 }
 
 #mainHeader {
+	background:#e8f6f2;
+
 	h1 {
 		font-family:"Rockwell";
 		font-weight: normal;
