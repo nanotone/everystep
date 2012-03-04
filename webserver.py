@@ -18,7 +18,7 @@ def doStep():
 
 @app.route('/')
 def index():
-	return "hello"
+	return flask.redirect('/static/links.html')
 
 @app.route('/user/<uid>')
 def user(uid):
